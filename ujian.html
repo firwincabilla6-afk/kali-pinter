@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kali-Pinter - Ujian</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+        }
+
+        body {
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Container Utama Menggunakan Gambar Kosong Baru Anda */
+        .container-ujian {
+            position: relative;
+            width: 100%;
+            max-width: 540px; 
+            aspect-ratio: 10 / 16; 
+            background-image: url('bg kosong.jpg.jpeg'); /* Memanggil file background kosong */
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        /* Top Bar Navigasi & Status */
+        .top-bar {
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 10;
+        }
+
+        .btn-keluar {
+            padding: 6px 15px;
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .status-teks {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #2f3542;
+        }
+
+        /* Area Pertanyaan Matematika Raksasa */
+        .area-soal-dinamis {
+            position: absolute;
+            top: 10%;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 16vw; 
+            font-weight: 900;
+            color: #12557a; 
+            text-shadow: 3px 3px #ffffff;
+        }
+
+        /* Simbol Sama Dengan (=) */
+        .simbol-sama-dengan {
+            font-size: 14vw;
+            color: #12557a;
+            line-height: 1;
+            margin-top: -10px;
+        }
+
+        @media (min-width: 540px) {
+            .area-soal-dinamis { font-size: 85px; }
+            .simbol-sama-dengan { font-size: 75px; }
+        }
+
+        /* Baris Wadah Tombol Pilihan Ganda Bulat */
+        .wrapper-pilihan {
+            position: absolute;
+            bottom: 23%;
+            left: 3%;
+            width: 94%;
+            height: 18%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        /* Membuat Lingkaran Berwarna Murni Lewat CSS */
+        .opsi-lingkaran {
+            width: 26%;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            border: 4px solid white; /* Efek list putih luar */
+            font-size: 10vw;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        @media (min-width: 540px) {
+            .opsi-lingkaran { font-size: 50px; }
+        }
+
+        /* Warna Pastel Bulatan CSS agar Senada dengan Tema Gambar */
+        .opsi-0 { background-color: #ff7675; } /* Merah Lembut */
+        .opsi-1 { background-color: #ffeaa7; color: #2d3436; } /* Kuning Lembut (Teks gelap) */
+        .opsi-2 { background-color: #55efc4; color: #2d3436; } /* Hijau Tosca Lembut */
+
+        .opsi-lingkaran:active {
+            transform: scale(0.9);
+        }
+
+        /* Desain Tombol Selanjutnya Menggunakan CSS Murni */
+        .btn-selanjutnya {
+            position: absolute;
+            bottom: 10%;
+            left: 25%;
+            width: 50%;
+            height: 8%;
+            background-color: #2d142c; /* Warna cokelat tua keunguan sesuai desain awal Anda */
+            color: white;
+            border: 4px solid #fff;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            transition: transform 0.1s;
+        }
+
+        .btn-selanjutnya:active {
+            transform: scale(0.95);
+        }
+
+        /* Layar Hasil Akhir */
+        .layar-skor-akhir {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .layar-skor-akhir h2 { font-size: 32px; color: #2f3542; margin-bottom: 10px; }
+        .angka-skor { font-size: 72px; font-weight: bold; color: #2ed573; margin-bottom: 30px; }
+        .btn-main-lagi {
+            padding: 12px 35px;
+            background-color: #2ed573;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(46,213,115,0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-ujian">
+        
+        <div class="top-bar">
+            <button class="btn-keluar" onclick="window.location.href='index.html'">← Keluar</button>
+            <div class="status-teks" id="txtSkor">Skor: 0</div>
+            <div class="status-teks" id="txtNyawa">Nyawa: ❤️❤️❤️</div>
+        </div>
+
+        <div class="area-soal-dinamis">
+            <span id="tampilanSoal">1 x 5</span>
+            <span class="simbol-sama-dengan">=</span>
+        </div>
+
+        <div class="wrapper-pilihan">
+            <button class="opsi-lingkaran opsi-0" onclick="pilihJawaban(0)">7</button>
+            <button class="opsi-lingkaran opsi-1" onclick="pilihJawaban(1)">5</button>
+            <button class="opsi-lingkaran opsi-2" onclick="pilihJawaban(2)">2</button>
+        </div>
+
+        <button class="btn-selanjutnya" onclick="prosesTombolSelanjutnya()">Selanjutnya</button>
+
+        <div class="layar-skor-akhir" id="layarHasil">
+            <h2>🎉 Ujian Selesai! 🎉</h2>
+            <p>Skor Ujian Kamu:</p>
+            <div class="angka-skor" id="skorAkhir">0</div>
+            <button class="btn-main-lagi" onclick="resetGame()">Main Lagi 🔄</button>
+        </div>
+
+    </div>
+
+    <script>
+        let skor = 0;
+        let nyawa = 3;
+        let nilaiBenar = 0;
+        let arrayOpsi = [];
+        let sudahJawab = false;
+        let indeksPilihanUser = null;
+
+        function resetGame() {
+            skor = 0;
+            nyawa = 3;
+            document.getElementById('layarHasil').style.display = 'none';
+            updateStatusAtas();
+            buatPertanyaan();
+        }
+
+        function updateStatusAtas() {
+            document.getElementById('txtSkor').innerText = `Skor: ${skor}`;
+            let hati = '';
+            for(let i=0; i<nyawa; i++) hati += '❤️';
+            document.getElementById('txtNyawa').innerText = `Nyawa: ${hati || '💀'}`;
+        }
+
+        function buatPertanyaan() {
+            if (nyawa <= 0) {
+                gameSelesai();
+                return;
+            }
+
+            sudahJawab = false;
+            indeksPilihanUser = null;
+
+            let a1 = Math.floor(Math.random() * 9) + 1;
+            let a2 = Math.floor(Math.random() * 9) + 1;
+            nilaiBenar = a1 * a2;
+
+            document.getElementById('tampilanSoal').innerText = `${a1} x ${a2}`;
+
+            arrayOpsi = [nilaiBenar];
+            while(arrayOpsi.length < 3) {
+                let salah = (Math.floor(Math.random() * 9) + 1) * (Math.floor(Math.random() * 9) + 1);
+                if(!arrayOpsi.includes(salah)) arrayOpsi.push(salah);
+            }
+
+            arrayOpsi.sort(() => Math.random() - 0.5);
+
+            let tombolLingkar = document.getElementsByClassName('opsi-lingkaran');
+            for(let i=0; i<3; i++) {
+                tombolLingkar[i].innerText = arrayOpsi[i];
+                tombolLingkar[i].style.transform = "scale(1)";
+                tombolLingkar[i].style.opacity = "1";
+                tombolLingkar[i].style.border = "4px solid white"; 
+            }
+        }
+
+        function pilihJawaban(indeks) {
+            if(sudahJawab) return; 
+            
+            sudahJawab = true;
+            indeksPilihanUser = indeks;
+
+            let tombolLingkar = document.getElementsByClassName('opsi-lingkaran');
+            for(let i=0; i<3; i++) {
+                if(i !== indeks) {
+                    tombolLingkar[i].style.opacity = "0.4";
+                }
+            }
+            tombolLingkar[indeks].style.transform = "scale(1.1)";
+            tombolLingkar[indeks].style.border = "4px solid #2d3436"; // Beri penanda pilihan
+        }
+
+        function prosesTombolSelanjutnya() {
+            if(!sudahJawab) {
+                alert("Silahkan pilih salah satu jawaban lingkaran terlebih dahulu! 🎯");
+                return;
+            }
+
+            if (arrayOpsi[indeksPilihanUser] === nilaiBenar) {
+                skor += 10;
+                alert("Hebat! Jawabanmu Benar 🎉");
+            } else {
+                nyawa--;
+                alert(`Aduh, salah! Jawaban yang betul adalah ${nilaiBenar} 😓`);
+            }
+
+            updateStatusAtas();
+            
+            if(nyawa <= 0) {
+                gameSelesai();
+            } else {
+                buatPertanyaan();
+            }
+        }
+
+        function gameSelesai() {
+            document.getElementById('layarHasil').style.display = 'flex';
+            document.getElementById('skorAkhir').innerText = skor;
+        }
+
+        resetGame();
+    </script>
+</body>
+</html>

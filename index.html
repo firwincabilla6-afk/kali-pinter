@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kali-Pinter - Menu Utama</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        body, html {
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        
+        /* Kontainer ini mengunci ukuran gambar agar rasionya tidak rusak di monitor */
+        .container-app {
+            position: relative;
+            width: auto;
+            height: 100vh;
+            aspect-ratio: 3 / 4; /* Mengunci rasio potret gambar menu Anda */
+           background-image: url('menu.jpg.jpeg');
+            background-size: contain; 
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+       /* 1. Fondasi dasar tombol (Sekarang diubah menjadi transparan penuh) */
+        .tombol-transparan {
+            position: absolute;
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0); /* Mengubah merah menjadi transparan */
+            border: none; /* Menghilangkan garis kuning */
+            outline: none;
+        }
+
+        /* 2. Mengatur posisi dan ukuran presisi masing-masing tombol */
+        .btn-main { 
+            top: 48.5%;    /* Diturunkan lagi dari dahan pohon agar pas di tombol Main Sekarang */
+            left: 24.5%; 
+            width: 51%; 
+            height: 11%; 
+        }
+        .btn-ujian { 
+            top: 63.5%;    /* Diturunkan lagi agar pas membungkus tombol Ujian */
+            left: 33.5%; 
+            width: 33%; 
+            height: 8.5%; 
+        }
+        .btn-tabel { 
+            top: 75.5%;    /* Diturunkan lagi agar pas membungkus Tabel Perkalian */
+            left: 27%; 
+            width: 46%; 
+            height: 9.5%; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-app">
+        <button class="tombol-transparan btn-main" onclick="window.location.href='level.html'"></button>
+        
+        <button class="tombol-transparan btn-ujian" onclick="window.location.href='ujian.html'"></button>
+        
+        <button class="tombol-transparan btn-tabel" onclick="window.location.href='tabel_perkalian.html'"></button>
+    </div>
+
+</body>
+</html>
